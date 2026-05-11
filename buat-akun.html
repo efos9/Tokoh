@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Akun Baru</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif;}
+        body{background:#f0f4f8; padding:20px;}
+        .wadah{max-width:420px; margin:auto; background:white; border-radius:16px; padding:25px; box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+        .judul{text-align:center; color:#2e7d32; font-size:22px; font-weight:bold; margin-bottom:25px;}
+        .kotak-isi{display:flex; flex-direction:column; gap:14px; margin-bottom:22px;}
+        input{padding:14px 16px; border:1px solid #dde2e8; border-radius:10px; font-size:15px; background:#fcfdfe;}
+        .tombol-hijau{background:#2e7d32; color:white; border:none; padding:14px; border-radius:10px; font-size:16px; font-weight:bold; cursor:pointer; width:100%;}
+        .pesan{padding:10px; border-radius:8px; margin-bottom:12px; display:none; text-align:center;}
+        .sukses{background:#e6f9e9; color:#2e7d32;}
+        .gagal{background:#ffe9e9; color:#d32f2f;}
+        .navigasi{margin-top:18px; text-align:center; padding-top:16px; border-top:1px solid #eee;}
+        .navigasi a{color:#165DFF; font-weight:500; text-decoration:none; margin:0 6px; font-size:14px;}
+    </style>
+</head>
+<body>
+    <div class="wadah">
+        <div class="judul">📝 BUAT AKUN BARU</div>
+        <div class="pesan sukses" id="pesanSukses">✅ Berhasil disimpan! Pindah ke Login...</div>
+        <div class="pesan gagal" id="pesanGagal">❌ Lengkapi semua data / Nama sudah ada!</div>
+
+        <div class="kotak-isi">
+            <input type="text" id="namaLengkap" placeholder="Nama Lengkap / Nama Toko">
+            <input type="text" id="username" placeholder="Nama Pengguna (untuk login)">
+            <input type="number" id="nohp" placeholder="Nomor HP / WA">
+            <input type="password" id="sandi1" placeholder="Kata Sandi">
+            <input type="password" id="sandi2" placeholder="Ulangi Kata Sandi">
+            <button class="tombol-hijau" onclick="simpanAkun()">✅ DAFTAR SEKARANG</button>
+        </div>
+
+        <div class="navigasi">
+            <a href="index.html">🏠 Halaman Awal</a> |
+            <a href="login.html">🔑 Sudah Punya Akun? Masuk</a> |
+            <a href="bernda.html">🏡 Beranda</a>
+        </div>
+    </div>
+
+<script>
+function simpanAkun(){
+    let namaLengkap = document.getElementById("namaLengkap").value.trim();
+    let username = document.getElementById("username").value.trim();
+    let nohp = document.getElementById("nohp").value.trim();
+    let sandi1 = document.getElementById("sandi1").value.trim();
+    let sandi2 = document.getElementById("sandi2").value.trim();
+
+    if(!namaLengkap || !username || !nohp || !sandi1 || !sandi2) return gagal();
+    if(sandi1 !== sandi2) return gagal("Kata sandi tidak sama!");
+
+    let data = JSON.parse(localStorage.getItem("dataPengguna")) || [];
+    if(data.find(a=>a.username===username)) return gagal("Nama pengguna SUDAH DIPAKAI!");
+
+    // ✅ DISIMPAN SELAMANYA, TIDAK PERLU ISI ULANG
+    data.push({namaLengkap, username, nohp, sandi:sandi1});
+    localStorage.setItem("dataPengguna", JSON.stringify(data));
+
+    sukses();
+    setTimeout(()=>{ window.location.href="login.html"; },1500);
+}
+function gagal(teks="Lengkapi SEMUA data!"){
+    let pesan = document.getElementById("pesanGagal");
+    pesan.innerHTML = "❌ "+teks; pesan.style.display="block";
+}
+function sukses(){
+    document.getElementById("pesanSukses").style.display="block";
+}
+</script>
+</body>
+</html>
