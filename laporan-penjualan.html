@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Penjualan & Laba Rugi</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif;}
+        body{background:#f0f4f8; padding:15px;}
+        .wadah{max-width:480px; margin:auto; background:white; border-radius:16px; padding:18px; box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+
+        .judul{background:#7928ca; color:white; border-radius:12px; padding:14px; text-align:center; margin-bottom:15px; font-size:18px; font-weight:bold;}
+        .info-ringkas{background:#e9d8fd; border-radius:10px; padding:12px; margin-bottom:15px;}
+        .baris-ringkas{display:flex; justify-content:space-between; padding:8px 4px; border-bottom:1px dashed #bbb;}
+        .baris-ringkas:last-child{border:none; font-weight:bold; font-size:16px; color:#7928ca;}
+
+        .kotak-tabel{background:#f8f9fa; border-radius:10px; padding:10px; margin:10px 0;}
+        table{width:100%; border-collapse: collapse; margin-top:8px;}
+        th{background:#7928ca; color:white; padding:8px; font-size:13px; text-align:center;}
+        td{border:1px solid #ccc; padding:8px; font-size:13px; text-align:center; background:white;}
+
+        .kosong{text-align:center; color:#888; padding:30px 0;}
+
+        .tombol{padding:10px 14px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; font-size:15px; margin:4px 2px;}
+        .ungu{background:#7928ca; color:white;}
+
+        .menu-bawah{margin-top:15px; text-align:center; padding-top:12px; border-top:1px solid #ddd;}
+        .menu-bawah a{color:#165DFF; text-decoration:none; margin:0 6px; font-size:14px;}
+
+        @media print {
+            body {background:white;}
+            .wadah, .menu-bawah {display:none;}
+            .cetak-kotak {display:block !important;}
+        }
+        .cetak-kotak {display:none; padding:15px; background:white;}
+    </style>
+</head>
+<body>
+    <div class="wadah">
+
+        <div class="judul">📊 LAPORAN PENJUALAN & LABA RUGI</div>
+
+        <div class="info-ringkas">
+            <div class="baris-ringkas">
+                <span>🛒 Total Transaksi</span>
+                <span id="jmlTrans">0 Kali</span>
+            </div>
+            <div class="baris-ringkas">
+                <span>💰 Total Penjualan</span>
+                <span id="totJual">Rp 0</span>
+            </div>
+            <div class="baris-ringkas">
+                <span>📈 Laba Bersih</span>
+                <span id="totLaba">Rp 0</span>
+            </div>
+        </div>
+
+        <div class="kotak-tabel">
+            <h4 style="text-align:center; margin-bottom:8px;">📋 RIWAYAT PENJUALAN</h4>
+            <div id="daftarLaporan">
+                <p class="kosong">⚠️ Belum ada riwayat penjualan.<br>Lakukan transaksi di menu KASIR dulu ya.</p>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-top:10px;">
+            <button class="tombol ungu" onclick="cetakLaporan()">🖨️ CETAK LAPORAN</button>
+        </div>
+
+        <div class="menu-bawah">
+            <a href="admin.html">🔙 Kembali ke Admin</a> |
+            <a href="beranda.html">🏡 Beranda</a> |
+            <a href="login.html">🔑 Keluar</a>
+        </div>
+    </div>
+
+
+    <div class="cetak-kotak" id="areaCetak">
+        <h3 style="text-align:center;">🏪 WAERUA INDOMARET</h3>
+        <p style="text-align:center;">LAPORAN PENJUALAN & LABA RUGI</p>
+        <p style="text-align:center;">Tanggal : <span id="cetakTgl"></span></p>
+        <hr>
+        <p>Total Transaksi : <span id="cetakJml"></span> Kali</p>
+        <p>Total Penjualan : Rp <span id="cetakTotal"></span></p>
+        <p>Laba Bersih     : Rp <span id="cetakLaba"></span></p>
+        <hr>
+        <p style="text-align:center;">✅ Terima Kasih</p>
+    </div>
+
+
+<script>
+let riwayat = JSON.parse(localStorage.getItem("riwayatTransaksi")) || [];
+let totalJual = 0;
+let totalLaba = 0;
+
+riwayat.forEach(t => {
+    totalJual += t.total;
+    totalLaba += t.laba || 0;
+});
+
+document.getElementById("jmlTrans").innerText = riwayat.length + " Kali";
+document.getElementById("totJual").innerText = "Rp " + totalJual.toLocaleString('id-ID');
+document.getElementById("totLaba").innerText = "Rp " + totalLaba.toLocaleString('id-ID');
+
+
+if(riwayat.length > 0){
+    let isi = `<table><tr><th>No</th><th>Barang</th><th>Jumlah</th><th>Total</th><th>Waktu</th></tr>`;
+    riwayat.forEach((t,i)=>{
+        isi += `<tr><td>${i+1}</td><td>${t.nama}</td><td>${t.jumlah}</td><td>Rp ${t.total.toLocaleString('id-ID')}</td><td>${t.waktu}</td></tr>`;
+    });
+    isi += `</table>`;
+    document.getElementById("daftarLaporan").innerHTML = isi;
+}
+
+
+function cetakLaporan(){
+    let hari = new Date();
+    let tgl = hari.getDate()+"/"+(hari.getMonth()+1)+"/"+hari.getFullYear();
+    document.getElementById("cetakTgl").innerText = tgl;
+    document.getElementById("cetakJml").innerText = riwayat.length;
+    document.getElementById("cetakTotal").innerText = totalJual.toLocaleString('id-ID');
+    document.getElementById("cetakLaba").innerText = totalLaba.toLocaleString('id-ID');
+    window.print();
+}
+</script>
+
+</body>
+          </html>
+          
