@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Lengkap Pengguna</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif;}
+        body{background:#f0f4f8; padding:15px;}
+        .wadah{max-width:480px; margin:auto; background:white; border-radius:16px; padding:18px; box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+
+        .judul{background:#165DFF; color:white; border-radius:12px; padding:14px; text-align:center; margin-bottom:15px; font-size:18px; font-weight:bold;}
+        
+        .kartu-profil{background:#e6f0fc; border-radius:12px; padding:20px; text-align:center; margin-bottom:15px;}
+        .foto-profil{width:100px; height:100px; border-radius:50%; border:3px solid #165DFF; object-fit:cover; margin-bottom:10px;}
+        .nama-user{font-size:20px; font-weight:bold; color:#165DFF; margin-bottom:4px;}
+        .hak-akses{background:#165DFF; color:white; padding:4px 12px; border-radius:20px; font-size:13px; display:inline-block; margin-bottom:10px;}
+
+        .info-baris{display:flex; justify-content:space-between; padding:10px 8px; border-bottom:1px dashed #ccc; align-items:center;}
+        .info-baris:last-child{border:none;}
+        .label{font-weight:500; color:#555; display:flex; align-items:center; gap:6px;}
+        .nilai{font-weight:bold; color:#165DFF; text-align:right; font-size:15px;}
+
+        .tombol{padding:10px 14px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; font-size:15px; width:100%; margin:8px 0;}
+        .merah{background:#dc3545; color:white;}
+
+        .menu-bawah{margin-top:15px; text-align:center; padding-top:12px; border-top:1px solid #ddd;}
+        .menu-bawah a{color:#165DFF; text-decoration:none; margin:0 6px; font-size:14px;}
+    </style>
+</head>
+<body>
+    <div class="wadah">
+
+        <div class="judul">👤 PROFIL LENGKAP PENGGUNA</div>
+
+
+        <div class="kartu-profil">
+            <img class="foto-profil" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Foto Profil">
+            <div class="nama-user" id="namaLengkap">Efos</div>
+            <div class="hak-akses">PEMILIK TOKO / ADMIN</div>
+            <p style="font-size:14px; color:#666;">Aplikasi Kasir WAERUA INDOMARET</p>
+        </div>
+
+
+        <div style="background:#f8f9fa; border-radius:8px; padding:12px; margin-bottom:12px;">
+            <div class="info-baris">
+                <span class="label">📧 Nama Pengguna</span>
+                <span class="nilai">Efos</span>
+            </div>
+            <div class="info-baris">
+                <span class="label">📱 Nomor HP</span>
+                <span class="nilai">081327913004</span>
+            </div>
+            <div class="info-baris">
+                <span class="label">📍 Alamat Toko</span>
+                <span class="nilai">Jalan Raya Wae Rua</span>
+            </div>
+            <div class="info-baris">
+                <span class="label">📅 Terdaftar Sejak</span>
+                <span class="nilai">11 Mei 2026</span>
+            </div>
+        </div>
+
+
+        <button class="tombol merah" onclick="keluarAkun()">🔐 KELUAR / LOGOUT</button>
+
+
+        <div class="menu-bawah">
+            <a href="index.html">🏠 Awal</a> |
+            <a href="beranda.html">🏡 Beranda</a> |
+            <a href="barang-masuk.html">📸 Masuk Barang</a> |
+            <a href="barang-beli-pelanggan.html">🛒 Kasir</a> |
+            <a href="daftar-harga.html">📋 Daftar Stok</a> |
+            <a href="admin.html">⚙️ Admin</a>
+        </div>
+
+    </div>
+
+
+<script>
+// Simpan data akun kamu selamanya
+let dataAkun = {
+    namaLengkap: "Efos",
+    namaAkun: "Efos",
+    nomorHp: "081327913004"
+};
+localStorage.setItem("penggunaAktif", JSON.stringify(dataAkun));
+
+
+// Fungsi keluar akun
+function keluarAkun(){
+    if(confirm("⚠️ Yakin mau keluar dari akun ini?")){
+        localStorage.removeItem("penggunaAktif");
+        location.href = "login.html";
+    }
+}
+</script>
+
+</body>
+</html>
