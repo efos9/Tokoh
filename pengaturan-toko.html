@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seting Nama Toko / Cetak Nota</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif;}
+        body{background:#f0f4f8; padding:15px;}
+        .wadah{max-width:480px; margin:auto; background:white; border-radius:16px; padding:18px; box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+
+        .judul{background:#6c757d; color:white; border-radius:12px; padding:14px; text-align:center; margin-bottom:15px; font-size:18px; font-weight:bold;}
+        .catatan{background:#fff3cd; border-left:4px solid #ffc107; padding:10px; border-radius:8px; margin-bottom:15px; font-size:14px;}
+
+        .kotak-input{background:#f8f9fa; border-radius:10px; padding:12px; margin:8px 0;}
+        label{font-weight:500; font-size:14px; display:block; margin-bottom:4px;}
+        input, textarea{width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:15px;}
+        textarea{height:80px; resize:none;}
+
+        .tombol{padding:11px 14px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; font-size:15px; margin:6px 2px; width:100%;}
+        .biru{background:#165DFF; color:white;}
+        .hijau{background:#2e7d32; color:white;}
+
+        .menu-bawah{margin-top:15px; text-align:center; padding-top:12px; border-top:1px solid #ddd;}
+        .menu-bawah a{color:#165DFF; text-decoration:none; margin:0 6px; font-size:14px;}
+    </style>
+</head>
+<body>
+    <div class="wadah">
+
+        <div class="judul">⚙️ SETING NAMA TOKO / CETAK NOTA</div>
+
+        <div class="catatan">
+            ✏️ Ubah data di bawah ini, lalu tekan <strong>SIMPAN PENGATURAN</strong>. Perubahan akan langsung terlihat di Halaman Admin dan semua Nota Cetak.
+        </div>
+
+
+        <div class="kotak-input">
+            <label>🏪 NAMA TOKO</label>
+            <input type="text" id="namaToko" value="WAERUA INDOMARET">
+        </div>
+
+        <div class="kotak-input">
+            <label>📍 ALAMAT LENGKAP TOKO</label>
+            <textarea id="alamatToko">Jalan Raya Wae Rua • Buka 24 Jam</textarea>
+        </div>
+
+        <div class="kotak-input">
+            <label>📞 NOMOR TELEPON / HP</label>
+            <input type="text" id="telpToko" value="081327913004">
+        </div>
+
+        <div class="kotak-input">
+            <label>📝 PESAN DI AKHIR NOTA CETAK</label>
+            <textarea id="pesanNota">✅ Terima Kasih • Selamat Berbelanja Kembali</textarea>
+        </div>
+
+
+        <button class="tombol hijau" onclick="simpanPengaturan()">💾 SIMPAN PENGATURAN</button>
+        <button class="tombol biru" onclick="kembaliAdmin()">🔙 KEMBALI KE ADMIN</button>
+
+
+        <div class="menu-bawah">
+            <a href="index.html">🏠 Awal</a> |
+            <a href="beranda.html">🏡 Beranda</a> |
+            <a href="admin.html">⚙️ Halaman Admin</a> |
+            <a href="login.html">🔑 Keluar</a>
+        </div>
+
+    </div>
+
+
+<script>
+// BACA DATA YANG SUDAH DISIMPAN, KALAU BELUM ADA PAKAI STANDAR
+let pengaturan = JSON.parse(localStorage.getItem("pengaturanToko")) || {
+    namaToko : "WAERUA INDOMARET",
+    alamatToko : "Jalan Raya Wae Rua",
+    telpToko : "081327913004",
+    pesanNota : "✅ Terima Kasih • Selamat Berbelanja Kembali"
+};
+
+// TAMPILKAN KE KOLOM
+document.getElementById("namaToko").value = pengaturan.namaToko;
+document.getElementById("alamatToko").value = pengaturan.alamatToko;
+document.getElementById("telpToko").value = pengaturan.telpToko;
+document.getElementById("pesanNota").value = pengaturan.pesanNota;
+
+
+// ✅ FUNGSI SIMPAN DATA BARU
+function simpanPengaturan(){
+    let baru = {
+        namaToko : document.getElementById("namaToko").value.trim(),
+        alamatToko : document.getElementById("alamatToko").value.trim(),
+        telpToko : document.getElementById("telpToko").value.trim(),
+        pesanNota : document.getElementById("pesanNota").value.trim()
+    };
+
+    localStorage.setItem("pengaturanToko", JSON.stringify(baru));
+    alert("✅ BERHASIL DISIMPAN!\nNama toko, alamat dan pesan nota sudah berubah.");
+}
+
+
+function kembaliAdmin(){
+    location.href="admin.html";
+}
+</script>
+
+</body>
+</html>
