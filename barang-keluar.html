@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barang Keluar / Terjual</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif;}
+        body{background:#f0f4f8; padding:15px;}
+        .wadah{max-width:480px; margin:auto; background:white; border-radius:16px; padding:18px; box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+
+        .judul{background:#2e7d32; color:white; border-radius:12px; padding:14px; text-align:center; margin-bottom:15px; font-size:18px; font-weight:bold;}
+        .info-total{background:#e6f9e9; padding:12px; border-radius:8px; text-align:center; font-size:17px; font-weight:bold; color:#2e7d32; margin-bottom:12px;}
+        
+        .kotak-cari, .kotak-isi{background:#f8f9fa; padding:12px; border-radius:8px; margin-bottom:12px;}
+        input, select{width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:15px; margin:6px 0;}
+        label{font-weight:500; font-size:14px;}
+
+        .daftar-item{border:1px solid #eee; border-radius:8px; min-height:120px; padding:10px; margin:12px 0;}
+        .item{border-bottom:1px dashed #ccc; padding:8px 4px; display:flex; justify-content:space-between; align-items:center;}
+        .item:last-child{border:none;}
+
+        .tombol{padding:10px 14px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; font-size:15px; margin:4px 2px; width:48%;}
+        .hijau{background:#2e7d32; color:white;}
+        .merah{background:#dc3545; color:white;}
+
+        .menu-bawah{margin-top:15px; text-align:center; padding-top:12px; border-top:1px solid #ddd;}
+        .menu-bawah a{color:#165DFF; text-decoration:none; margin:0 6px; font-size:14px;}
+    </style>
+</head>
+<body>
+    <div class="wadah">
+
+        <div class="judul">📤 BARANG KELUAR / TERJUAL</div>
+
+        <div class="info-total">
+            ✅ TOTAL PENJUALAN : Rp <span id="totalSemua">0</span>
+        </div>
+
+
+        <!-- ✅ PILIH / CARI BARANG DARI STOK YANG SUDAH MASUK -->
+        <div class="kotak-cari">
+            <label>📋 Pilih Barang :</label>
+            <select id="pilihBarang" onchange="ambilDataBarang()">
+                <option value="">-- Pilih Barang dari Stok --</option>
+            </select>
+        </div>
+
+
+        <!-- ✅ DATA MUNCUL OTOMATIS -->
+        <div class="kotak-isi">
+            <input type="text" id="kodeBarang" placeholder="Kode Barang" readonly style="background:#e9ecef;">
+            <input type="text" id="namaBarang" placeholder="Nama Barang" readonly style="background:#e9ecef;">
+            <input type="number" id="hargaJual" placeholder="Harga Satuan" readonly style="background:#e9ecef;">
+            
+            <input type="number" id="jumlahKeluar" placeholder="Masukkan Jumlah Terjual" min="1" value="1">
+            <input type="date" id="tglTransaksi" value="">
+
+            <div style="text-align:center; margin-top:8px;">
+                <button class="tombol hijau" onclick="simpanKeluar()">💾 SIMPAN CATATAN</button>
+                <button class="tombol merah" onclick="kosongkanForm()">🔄 BARU</button>
+            </div>
+        </div>
+
+
+        <!-- ✅ DAFTAR SEMUA BARANG YANG SUDAH TERJUAL / KELUAR -->
+        <div class="daftar-item">
+            <h4 style="margin-bottom:8px; color:#2e7d32;">📑 Riwayat Penjualan / Keluar :</h4>
+            <div id="daftarRiwayat">
+                <p style="color:#888; text-align:center; padding-top:20px;">Belum ada catatan barang keluar...</p>
+            </div>
+        </div>
+
+
+        <!-- ✅ MENU NYAMBUNG -->
+        <div class="menu-bawah">
+            <a href="index.html">🏠 Awal</a> |
+            <a href="beranda.html">🏡 Beranda</a> |
+            <a href="barang-masuk.html">📸 Masuk Barang</a> |
+            <a href="kasir.html">🛒 Kasir</a> |
+            <a href="daftar.html">📋 Daftar Stok</a>
+        </div>
+
+    </div>
+
+
+<script>
+// Ambil data stok barang yg sudah disimpan
+let dataStok = JSON.parse(localStorage.getItem("dataBarang")) || [];
+let dataKeluar = JSON.parse(localStorage.getItem("dataKeluar")) || [];
+
+// Isi daftar pilihan barang
+let pilih = document.getElementById("pilihBarang");
+dataStok.forEach(brg => {
+    let opsi = document.createElement("option");
+    opsi.value = brg.kode;
+    opsi.innerText = brg.nama + " | Rp " + brg.harga.toLocaleString('id-ID');
+    pilih.appendChild(opsi);
+});
+
+// Set tanggal hari ini otomatis
+document.getElementById("tglTransaksi").valueAsDate = new Date();
+
+// Ambil data saat dipilih
+function ambilDataBarang(){
+    let kodePilih = document.getElementById("pilihBarang").value;
+    let ketemu = dataStok.find(b => b.kode === kodePilih);
+    if(ketemu){
+        document.getElementById("kodeBarang").value = ketemu.kode;
+        document.getElementById("namaBarang").value = ketemu.nama;
+        document.getElementById("hargaJual").value = ketemu.harga;
+    }
+}
+
+// Simpan catatan keluar
+function simpanKeluar(){
+    let kode = document.getElementById("kodeBarang").value;
+    let nama = document.getElementById("namaBarang").value;
+    let harga = parseInt(document.getElementById("hargaJual").value);
+    let jumlah = parseInt(document.getElementById("jumlahKeluar").value);
+    let tanggal = document.getElementById("tglTransaksi").value;
+
+    if(!kode || jumlah < 1){ alert("❌ Pilih barang & isi jumlah dulu!"); return; }
+
+    // Simpan ke memori selamanya
+    dataKeluar.push({kode,nama,harga,jumlah,tanggal, total: harga*jumlah});
+    localStorage.setItem("dataKeluar", JSON.stringify(dataKeluar));
+
+    // Kurangi stok otomatis
+    let indeks = dataStok.findIndex(b => b.kode === kode);
+    if(dataStok[indeks].stok >= jumlah){
+        dataStok[indeks].stok -= jumlah;
+        localStorage.setItem("dataBarang", JSON.stringify(dataStok));
+    }else{
+        alert("⚠️ Stok tidak cukup! Sisa: "+dataStok[indeks].stok);
+        return;
+    }
+
+    alert("✅ Berhasil disimpan! Stok sudah dikurangi otomatis");
+    tampilkanRiwayat();
+    kosongkanForm();
+}
+
+
+// Tampilkan daftar riwayat & hitung total
+function tampilkanRiwayat(){
+    let wadah = document.getElementById("daftarRiwayat");
+    wadah.innerHTML = "";
+    let totalSemua = 0;
+
+    if(dataKeluar.length === 0){
+        wadah.innerHTML = `<p style="color:#888; text-align:center; padding-top:20px;">Belum ada catatan barang keluar...</p>`;
+        document.getElementById("totalSemua").innerText = "0";
+        return;
+    }
+
+    dataKeluar.forEach((item, i) => {
+        totalSemua += item.total;
+        wadah.innerHTML += `
+        <div class="item">
+            <div>
+                <b>${item.nama}</b><br>
+                <small>${item.tanggal} | Jumlah: ${item.jumlah} x Rp ${item.harga.toLocaleString('id-ID')}</small>
+            </div>
+            <div><b>Rp ${item.total.toLocaleString('id-ID')}</b></div>
+        </div>`;
+    });
+
+    document.getElementById("totalSemua").innerText = totalSemua.toLocaleString('id-ID');
+}
+
+
+function kosongkanForm(){
+    document.getElementById("pilihBarang").value = "";
+    document.getElementById("kodeBarang").value = "";
+    document.getElementById("namaBarang").value = "";
+    document.getElementById("hargaJual").value = "";
+    document.getElementById("jumlahKeluar").value = 1;
+}
+
+
+// Buka langsung tampilkan riwayat
+tampilkanRiwayat();
+</script>
+
+</body>
+</html>
