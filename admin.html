@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Admin - WAERUA INDOMARET</title>
+    <style>
+        *{margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif;}
+        body{background:#f0f4f8; padding:15px;}
+        .wadah{max-width:480px; margin:auto; background:white; border-radius:16px; padding:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+
+        .kotak-info{background:#e6f0fc; border-radius:10px; padding:12px 15px; margin:10px 0;}
+        .baris-info{display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px dashed #ccc; font-size:15px;}
+        .baris-info:last-child{border:none;}
+        .kiri{display:flex; align-items:center; gap:6px;}
+
+        .tombol-menu{width:100%; padding:15px 12px; border:none; border-radius:10px; font-weight:bold; font-size:15px; cursor:pointer; text-align:left; display:flex; align-items:center; gap:8px; color:white; margin:6px 0;}
+        .biru{background:#165DFF;}
+        .hijau{background:#2e7d32;}
+        .ungu{background:#7928ca;}
+        .abu{background:#6c757d;}
+        .merah{background:#dc3545;}
+
+        .menu-bawah{margin-top:15px; text-align:center; padding-top:12px; border-top:1px solid #ddd;}
+        .menu-bawah a{color:#165DFF; text-decoration:none; margin:0 6px; font-size:14px;}
+    </style>
+</head>
+<body>
+    <div class="wadah">
+
+        <!-- ✅ BAGIAN ATAS LENGKAP SAMA PERSIS -->
+        <div class="kotak-info">
+            <div class="baris-info">
+                <div class="kiri">🏪 Nama Toko</div>
+                <span><strong>WAERUA INDOMARET</strong></span>
+            </div>
+            <div class="baris-info">
+                <div class="kiri">📍 Alamat</div>
+                <span>Jalan Raya Wae Rua</span>
+            </div>
+            <div class="baris-info">
+                <div class="kiri">👤 Pengguna Aktif</div>
+                <span><strong>Efos</strong></span>
+            </div>
+            <div class="baris-info">
+                <div class="kiri">📱 Nomor HP</div>
+                <span><strong>081327913004</strong></span>
+            </div>
+            <div class="baris-info">
+                <div class="kiri">📅 Tanggal</div>
+                <span id="tanggalSekarang">11 / 5 / 2026</span>
+            </div>
+        </div>
+
+
+        <!-- ✅ SEMUA TOMBOL LENGKAP, WARNA & TULISAN SAMA PERSIS -->
+        <button class="tombol-menu biru" onclick="keHalaman('buat-akun.html')">👤 TAMBAH PENGGUNA / KASIR BARU</button>
+
+        <button class="tombol-menu hijau" onclick="keHalaman('barang-masuk.html')">📦 KELOLA BARANG / STOK MASUK</button>
+
+        <button class="tombol-menu hijau" onclick="keHalaman('daftar-harga.html')">📋 UBAH HARGA & DAFTAR BARANG</button>
+
+        <button class="tombol-menu ungu" onclick="keHalaman('laporan-penjualan.html')">📊 LAPORAN PENJUALAN / LABA RUGI</button>
+
+        <button class="tombol-menu abu" onclick="keHalaman('pengaturan-toko.html')">⚙️ SETING NAMA TOKO / CETAK NOTA</button>
+
+        <button class="tombol-menu merah" onclick="hapusSemuaData()">🗑️ KOSONGKAN SEMUA DATA (RESET)</button>
+
+
+        <!-- ✅ MENU BAWAH SAMA PERSIS -->
+        <div class="menu-bawah">
+            <a href="index.html">🏠 Awal</a> |
+            <a href="beranda.html">🏡 Beranda</a> |
+            <a href="profil.html">👤 Profil</a> |
+            <a href="barang-beli-pelanggan.html">🛒 Kasir</a> |
+            <a href="login.html">🔑 Keluar</a>
+        </div>
+
+    </div>
+
+
+<script>
+// ✅ Tampilkan tanggal otomatis
+let hari = new Date();
+let format = hari.getDate() + " / " + (hari.getMonth()+1) + " / " + hari.getFullYear();
+document.getElementById("tanggalSekarang").innerText = format;
+
+
+function keHalaman(tujuan){
+    location.href = tujuan;
+}
+
+
+// ✅ Fungsi Reset Lengkap & Aman
+function hapusSemuaData(){
+    if(confirm("⚠️ PERINGATAN KERAS!\nSemua barang, harga, akun, laporan akan HILANG PERMANEN! Tidak bisa dikembalikan lagi!\n\nYakin mau lanjut?")){
+        if(confirm("❌ TERAKHIR: Anda BENAR-BENAR YAKIN? Ini tindakan tidak bisa dibatalkan!")){
+            localStorage.clear();
+            alert("✅ Semua data sudah dihapus. Aplikasi kembali ke awal.");
+            location.href = "login.html";
+        }
+    }
+}
+</script>
+
+</body>
+</html>
